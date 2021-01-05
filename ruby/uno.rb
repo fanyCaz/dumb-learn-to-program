@@ -19,6 +19,8 @@ end
 
 x,y,z = [true,'two',false]
 
+#declaration, assingment and bool comparison
+#everything at the same time
 if a = f(x) and b = f(y) and c = !f(z) then
     d = g(a,b,c)
 end
