@@ -9,8 +9,8 @@ class Book
         @name   = name
         @author = author
     end
-
-    def sinopsis(sinps)
+    #setter
+    def sinopsis=(sinps)
         @sinopsis = sinps
     end
 
@@ -27,7 +27,7 @@ fransk = Book.new('frankenstein',\
 
 puts 'yes' if fransk.respond_to?("sinopsis")
 puts 'too' if fransk.respond_to?("loud")
-fransk.sinopsis("a big monsta")
+fransk.sinopsis = "a big monsta"
 fransk::writeSinopsis()
 
 fun = Song.new('man i feel like a woman','3:32','zangel',23)
