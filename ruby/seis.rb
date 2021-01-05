@@ -32,4 +32,15 @@ fransk::writeSinopsis()
 
 fun = Song.new('man i feel like a woman','3:32','zangel',23)
 fun.description()
+
+#exception handler
+begin
+    on = Song.new('nanana','2:34','on') 
+rescue => exception
+    puts 'error'
+    puts exception
+else
+    puts 'canción generada correctamente'
+end
+
 #fun.display
