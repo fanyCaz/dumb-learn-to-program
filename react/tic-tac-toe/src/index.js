@@ -7,28 +7,47 @@ import './index.css';
 //Returns a view
 
 //This is a child Component, but not an extension from the Board Class
-class Square extends React.Component{
-	constructor(props){
-		super(props);
-		this.state={
-			value:null,
-		};
-	}
-	render(){
-		return(
-			<button className="square" onClick={ ()=> { console.log('click'); } }>
-				{this.props.value}
-			</button>
-		);
-	}
+function Square(props){
+	return(
+		<button className="square" onClick={ props.onClick }>
+			{props.value}
+		</button>
+	);
 }
 
 class Board extends React.Component{
-	renderSquare(i){
-		return <Square value={i}/>
+	constructor(props){
+		//all sub-classes should have a super in the constructor
+		super(props);
+		this.state={
+			squares: Array(9).fill(null),
+			xIsNext: true
+		}
 	}
+
+	handleClick(i){
+		const squares = this.state.squares.slice();
+		//if there's already a winner or the square is already full
+		if(calculateWinner(squares) || squares[i]){
+			return;
+		}
+		squares[i] = this.state.xIsNext ? 'X' : 'O';
+		this.setState({
+			squares: squares,
+			xIsNext: !this.state.xIsNext
+		});
+		console.log( this.state.squares );
+	}
+
+	renderSquare(i){
+		return ( 
+			<Square value={this.state.squares[i]} onClick={()=> this.handleClick(i)}/>
+		);
+	}
+
 	render(){
-		const status = 'next player x';
+		const winner = calculateWinner(this.state.squares);
+		let status = winner ? `Winner: ${winner}` : `next player ${this.state.xIsNext ? 'X' : 'O'}`;
 		return(
 			<div>
 				<div className="status">{status}</div>
@@ -72,3 +91,25 @@ ReactDOM.render(
 	<Game/>,
 	document.getElementById('root')
 );
+
+
+function calculateWinner(squares){
+	const winningLines = [
+		[0,1,2],
+		[3,4,5],
+		[6,7,8],
+		[0,3,6],
+		[1,4,7],
+		[2,5,8],
+		[0,4,8],
+		[2,4,6],
+	];
+
+	for (var i = 0; i < winningLines.length; i++) {
+		const [a,b,c] = winningLines[i];
+		if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]){
+			return squares[a];
+		}
+	}
+	return null;
+}
