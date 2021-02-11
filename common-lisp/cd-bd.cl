@@ -34,6 +34,19 @@
     (with-standard-io-syntax
       (setf *db* (read in)))))
 
+(defun filter-by-artist (artist)
+ (remove-if-not
+  #'(lambda (cd) (equal (getf cd :artist) artist )) *db*))
+
+(defun where (&key title artist rating (ripped nil ripped-p))
+  (remove-if-not
+   #'(lambda (cd)
+    (and
+      (if title (equal (getf cd :title) title) t)
+      (if artist (equal (getf cd :artist) artist) t)
+      (if rating (equal (getf cd :rating) rating) t)
+      (if ripped-p (equal (getf cd :ripped) ripped) t)))*db*))
+
 (make-cd "Roses" "carly" 9 t)
 
 (add-record (make-cd "boy" "carly" 10 t))
